@@ -1,0 +1,29 @@
+#sign-up {
+  max-width:300px;
+  margin:auto;
+  padding:40px 0 ;
+  text-align: center;
+  .ant-btn {
+    width: 100%;
+  }
+  .ant-input-affix-wrapper {
+    margin-bottom: 20px;
+    .ant-input {
+      height: 40px;
+    }
+  }
+  h1 {
+    font-size: 42px;
+    font-weight: 400;
+  }
+  .tip {
+    margin-top: 18px;
+  }
+  .logo {
+    text-align: center;
+    margin-bottom: 50px;
+    img {
+      height: 28px;
+    }
+  }
+}
