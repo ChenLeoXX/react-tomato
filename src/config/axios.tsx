@@ -4,7 +4,7 @@ const app_id = 'RcdcW9otfK7c66XZfYKVXB29'
 const app_secret = 'LUTvZHfWHvxKSjQGordWAcR2'
 const API = axios.create({
     baseURL: 'https://gp-server.hunger-valley.com/',
-    timeout: 1000,
+    timeout: 10000,
     headers: {
         't-app-id': app_id,
         't-app-secret': app_secret
