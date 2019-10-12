@@ -80,7 +80,7 @@ export default class SignUp extends React.Component<PropsIF, StateIF> {
                 <Input.Password placeholder="输入密码"  onChange={this.onPasswordChange}/>
                 <Input.Password placeholder="确认密码" onChange={this.onConfirmChange}/>
                 <Button onClick={this.validate} type="danger" size='large'>注册</Button>
-                <p className='tip'>如果你已有账号,可立即<Link to='login'>登录</Link></p>
+                <p className='tip'>如果你已有账号，可立即<Link to='login'>登录</Link></p>
             </div>
         );
     }

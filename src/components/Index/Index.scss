@@ -1,0 +1,15 @@
+.index-wrapper {
+  max-width: 960px;
+  margin:0 auto;
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding:4px 0;
+    border-bottom: 1px solid #ddd;
+    .logo {
+      font-size: 32px;
+      font-weight: 400;
+    }
+  }
+}

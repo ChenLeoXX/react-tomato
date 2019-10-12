@@ -25,25 +25,31 @@ export default class SignUp extends React.Component<PropsIF, StateIF> {
         newState[key] = e.target.value
         this.setState(newState)
     }
+
+    onKeyUp = (e:React.KeyboardEvent)=>{
+        if(e.keyCode === 13){
+            this.signUp()
+        }
+    }
+
     signUp = async ()=>{
         const {account,password} = this.state
-        try {
-            await api.post('/sign_in/user',{
-                account,
-                password,
-            }).then(res=> {
-                if (res.status === 200) {
-                    message.success('登录成功')
-                    this.props.history.push('/')
+            try {
+                await api.post('/sign_in/user',{
+                    account,
+                    password,
+                }).then(res=> {
+                    if (res.status === 200) {
+                        message.success('登录成功')
+                        this.props.history.push('/')
+                    }
+                })
+            }catch (e) {
+                let errMsg = e.response.data.errors
+                if(errMsg){
+                    message.error(errMsg)
                 }
-            })
-        }catch (e) {
-            let errMsg = e.response.data.errors
-            if(errMsg){
-                message.error(errMsg)
             }
-        }
-
     }
     validate = ()=>{
         this.signUp()
@@ -61,7 +67,9 @@ export default class SignUp extends React.Component<PropsIF, StateIF> {
                     onChange={(e)=>this.onInputChange('account',e)}
                     allowClear
                 />
-                <Input.Password placeholder="输入密码" onChange={(e)=>this.onInputChange('password',e)}/>
+                <Input.Password placeholder="输入密码"
+                                onKeyUp={e=>this.onKeyUp(e)}
+                                onChange={(e)=>this.onInputChange('password',e)}/>
                 <Button onClick={this.validate} type="danger" size='large'>登录</Button>
                 <p className='tip'>还没有账号？立即<Link to='signUp'>注册</Link></p>
             </div>
