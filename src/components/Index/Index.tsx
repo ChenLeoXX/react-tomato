@@ -39,7 +39,11 @@ export default class Index extends React.Component<PropsIF, StateIF> {
     getTodos = async ()=>{
         try {
             const {data:{resources}} = await api.get('todos')
-            this.setState({todos:resources})
+            const newState = resources.map((t:any)=>{
+                 t.editing = false
+                return t
+            })
+            this.setState({todos:newState})
         }catch(e){
             throw new Error(e)
         }
@@ -72,6 +76,20 @@ export default class Index extends React.Component<PropsIF, StateIF> {
        }catch(e){
            throw new Error(e)
        }
+    }
+
+    toggleEdit = (id:number)=>{
+        const {todos} = this.state
+        const newState = todos.map((t:any)=>{
+            if(t.id === id){
+                return Object.assign({},t,{editing:true})
+            } else{
+                 t.editing = false
+                return t
+            }
+        })
+        this.setState({todos:newState})
+
     }
 
     updateItem = async (id:number,params:any)=>{
@@ -122,6 +140,7 @@ export default class Index extends React.Component<PropsIF, StateIF> {
                             {
                                 this.state.todos.map((t:any)=><TodoItem
                                     updateItem={this.updateItem}
+                                    toggleEdit={this.toggleEdit}
                                     key={t.id} {...t}/>)
                             }
                         </div>
