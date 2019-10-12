@@ -1,3 +1,6 @@
+main {
+  margin-top: 16px;
+}
 .index-wrapper {
   max-width: 960px;
   margin:0 auto;
@@ -10,6 +13,16 @@
     .logo {
       font-size: 32px;
       font-weight: 400;
+    }
+  }
+  .todos-outer {
+    width: 50%;
+    padding:16px;
+    border:1px solid #ddd;
+    border-radius: 4px;
+    .todo-items {
+      border-top: 1px solid #ddd;
+      margin-top: 16px;
     }
   }
 }

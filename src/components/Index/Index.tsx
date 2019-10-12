@@ -3,6 +3,7 @@ import api from '../../config/axios'
 import {RouteComponentProps} from "react-router-dom";
 import {Menu,Dropdown,Icon,Button,message} from "antd";
 import TodoInput from '../TodoInput/TodoInput'
+import TodoItem from '../TodoItem/TodoItem'
 import './Index.scss'
 
 interface PropsIF extends RouteComponentProps{
@@ -10,14 +11,16 @@ interface PropsIF extends RouteComponentProps{
 }
 
 interface StateIF {
-    user:any
+    user:any,
+    todos:any[],
 }
 
 export default class Index extends React.Component<PropsIF, StateIF> {
     constructor(props: PropsIF) {
         super(props)
         this.state = {
-            user:{}
+            user:{},
+            todos:[]
         }
     }
 
@@ -33,21 +36,36 @@ export default class Index extends React.Component<PropsIF, StateIF> {
         }
     }
 
+    getTodos = async ()=>{
+        try {
+            const {data:{resources}} = await api.get('todos')
+            this.setState({todos:resources})
+        }catch(e){
+            throw new Error(e)
+        }
+    }
+
     logout = ()=>{
         localStorage.setItem('token','')
         this.props.history.push('login')
     }
-
+    async componentDidMount() {
+        await this.getTodos()
+    }
     async componentWillMount(){
         await this.getUser()
     }
+
     addTodo = async (description:string)=>{
        try {
            const response = await  api.post('todos',{
                description
            })
            if(response.status === 200){
+               const {todos} = this.state
                message.success('添加任务成功')
+               //新添加的TODO添加到列表中
+               this.setState({todos:[response.data.resource,...todos]})
            }else{
                message.success('添加失败')
            }
@@ -55,6 +73,24 @@ export default class Index extends React.Component<PropsIF, StateIF> {
            throw new Error(e)
        }
     }
+
+    updateItem = async (id:number,params:any)=>{
+        const {todos} = this.state
+        const response = await api.put(`todos/${id}`,params)
+        if(response.status === 200){
+            const newState = todos.map(t=>{
+                if(t.id === id){
+                    return response.data.resource
+                }else{
+                    return t
+                }
+            })
+            this.setState({todos:newState})
+        }else{
+            message.error('更新错误')
+        }
+    }
+
     render() {
         const menu = (
             <Menu>
@@ -79,8 +115,17 @@ export default class Index extends React.Component<PropsIF, StateIF> {
                         </Button>
                     </Dropdown>
                 </header>
-                <main className="clocks-wrapper">
-                    <TodoInput addTodo={this.addTodo} />
+                <main>
+                    <div className="todos-outer">
+                        <TodoInput addTodo={(params:any)=>this.addTodo(params)} />
+                        <div className="todo-items">
+                            {
+                                this.state.todos.map((t:any)=><TodoItem
+                                    updateItem={this.updateItem}
+                                    key={t.id} {...t}/>)
+                            }
+                        </div>
+                    </div>
                 </main>
             </div>
         );
