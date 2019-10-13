@@ -1,6 +1,9 @@
 import Icon from "antd/lib/icon";
 import * as React from 'react'
-import {Input} from "antd";
+import {connect} from "react-redux";
+import {Input, message} from "antd";
+import api from "../../config/axios";
+import {addTodo} from "../../redux/action";
 import './TodoInput.scss';
 
 interface PropsIF {
@@ -12,7 +15,7 @@ interface StateIF {
     isFocus:boolean;
 }
 
-export default class TodoInput extends React.Component<PropsIF, StateIF> {
+ class TodoInput extends React.Component<PropsIF, StateIF> {
     constructor(props: PropsIF) {
         super(props)
         this.state = {
@@ -21,12 +24,38 @@ export default class TodoInput extends React.Component<PropsIF, StateIF> {
         }
     }
     //区分点击提交和回车提交
-    addNewTodo = (e?:React.KeyboardEvent,isSubmit:boolean = false)=>{
+    addNewTodo = async (e?:React.KeyboardEvent,isSubmit:boolean = false)=>{
         if(e&&e.keyCode === 13 && !isSubmit){
-            this.props.addTodo( e&&(e.target as HTMLInputElement).value)
+            try {
+                const response = await api.post('todos',{
+                    description:(e.target as HTMLInputElement).value
+                })
+                if(response.status === 200){
+                    message.success('添加任务成功')
+                    //新添加的TODO添加到列表中
+                    this.props.addTodo(response.data.resource)
+                }else{
+                    message.success('添加失败')
+                }
+            }catch(e){
+                throw new Error(e)
+            }
             this.setState({description:''})
         }else if(isSubmit){
-            this.props.addTodo(this.state.description)
+            try {
+                const response = await  api.post('todos',{
+                    description:this.state.description
+                })
+                if(response.status === 200){
+                    message.success('添加任务成功')
+                    //新添加的TODO添加到列表中
+                    this.props.addTodo(response.data.resource)
+                }else{
+                    message.success('添加失败')
+                }
+            }catch(e){
+                throw new Error(e)
+            }
             this.setState({description:''})
             this.setState({isFocus:false})
         }
@@ -45,3 +74,13 @@ export default class TodoInput extends React.Component<PropsIF, StateIF> {
         );
     }
 }
+const mapStateToProps = (ownProps:object) => {
+    return {
+        ...ownProps
+    }
+}
+
+const mapDispatchToProps = {
+    addTodo
+}
+export  default connect(mapStateToProps,mapDispatchToProps)(TodoInput)
