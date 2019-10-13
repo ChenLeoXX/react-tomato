@@ -1,8 +1,57 @@
 .todo-item {
-  padding:5px 3px;
-  .edit-wrapper {
-    .anticon {
-      cursor: pointer;
+  padding:8px 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  border-bottom: 1px solid #ddd;
+  &.editing {
+    background: #fff3d2!important;
+    &:hover {
+      .edit-wrapper {
+        .icon-wrapper {
+          display: block;
+        }
+      }
     }
+  }
+  &.completed {
+    text-decoration: line-through;
+    color: #b1b1b1;
+  }
+  &:hover {
+    background: #f9f9f9;
+  }
+  .ant-checkbox-checked .ant-checkbox-inner::after {
+    transform: rotate(45deg) scale(1) translate(-40%, -60%);
+  }
+  .ant-checkbox-wrapper {
+    margin-right: 8px;
+  }
+  .edit-wrapper {
+    display: flex;
+    flex:1;
+    justify-content: space-between;
+    .icon-wrapper {
+      display: none;
+      .anticon {
+        cursor: pointer;
+        margin-left: 8px;
+      }
+    }
+    textarea{
+      overflow: hidden;
+      overflow-wrap: break-word;
+      resize: none;
+      height: 22px;
+      outline: none;
+      border:none;
+      background: transparent;
+      width: 80%;
+    }
+  }
+  .description {
+    display: inline-block;
+    width: 100%;
   }
 }

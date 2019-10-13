@@ -9,7 +9,7 @@ interface PropsIF {
     id:number;
     updateItem:Function;
     editing:boolean;
-    toggleEdit:Function
+    toggleEdit:Function,
 }
 
 interface StateIF {
@@ -41,24 +41,29 @@ export default class TodoItem extends React.Component<PropsIF, StateIF> {
 
     render() {
         const editClass = classNames({
-            'edit-wrapper':true,
-            'editing':this.props.editing
+            'todo-item':true,
+            'editing':this.props.editing,
+            'completed':this.props.completed
         })
         const input = (
-          <div className={editClass}>
-              <input type="text" value={this.state.editText}
+          <div className="edit-wrapper">
+              <textarea value={this.state.editText} ref={(node)=>node&&node.focus()}
                      onChange={e=>this.setState({editText:e.target.value})}
                      onKeyUp={e=>this.submit(e)}
               />
               <div className="icon-wrapper">
-                  <Icon type="enter" onClick={e=>this.update({description:this.state.editText})}/>
-                  <Icon type="delete" onClick={e=>this.update({deleted:true})}/>
+                  <Icon type="enter"
+                        style={{'fill':'#bbb'}}
+                        onClick={e=>this.update({description:this.state.editText})}/>
+                  <Icon type="delete"
+                        style={{'fill':'#bbb'}}
+                        onClick={e=>this.update({deleted:true})}/>
               </div>
           </div>
         );
         const text = <span className="description" onDoubleClick={this.toEdit}>{this.props.description}</span>
         return (
-            <div className="todo-item">
+            <div className={editClass}>
                 <Checkbox checked={this.props.completed}
                           onChange={e=>this.update({completed:e.target.checked})}
                 />

@@ -1,5 +1,5 @@
 main {
-  margin-top: 16px;
+  padding:16px 0;
 }
 .index-wrapper {
   max-width: 960px;
@@ -20,9 +20,15 @@ main {
     padding:16px;
     border:1px solid #ddd;
     border-radius: 4px;
+    box-shadow:  2px 0 rgba(225,225,225,.2);
+    background: #fff;
     .todo-items {
       border-top: 1px solid #ddd;
       margin-top: 16px;
+      &.completed {
+        margin-top: 0px;
+        border-top:none;
+      }
     }
   }
 }

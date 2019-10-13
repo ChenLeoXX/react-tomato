@@ -49,6 +49,18 @@ export default class Index extends React.Component<PropsIF, StateIF> {
         }
     }
 
+    get unDeletedTodo(){
+        return this.state.todos.filter(t=>!t.deleted)
+    }
+
+    get unCompletedTodo(){
+        return this.unDeletedTodo.filter(t=>!t.completed)
+    }
+
+    get completedTodo(){
+        return this.unDeletedTodo.filter(t=>t.completed)
+    }
+
     logout = ()=>{
         localStorage.setItem('token','')
         this.props.history.push('login')
@@ -138,7 +150,15 @@ export default class Index extends React.Component<PropsIF, StateIF> {
                         <TodoInput addTodo={(params:any)=>this.addTodo(params)} />
                         <div className="todo-items">
                             {
-                                this.state.todos.map((t:any)=><TodoItem
+                                this.unCompletedTodo.map((t:any)=><TodoItem
+                                    updateItem={this.updateItem}
+                                    toggleEdit={this.toggleEdit}
+                                    key={t.id} {...t}/>)
+                            }
+                        </div>
+                        <div className="todo-items completed">
+                            {
+                                this.completedTodo.map((t:any)=><TodoItem
                                     updateItem={this.updateItem}
                                     toggleEdit={this.toggleEdit}
                                     key={t.id} {...t}/>)
