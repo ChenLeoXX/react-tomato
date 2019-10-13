@@ -1,4 +1,4 @@
-import {INIT_TODO,EDIT_TODO,ADD_TODO} from "../actionTypes";
+import {INIT_TODO,EDIT_TODO,ADD_TODO,UPDATE_TODO} from "../actionTypes";
 
 interface ActionIF {
     type:String,
@@ -9,9 +9,24 @@ export default (state:any[]=[],action:ActionIF) =>{
         case ADD_TODO:
             return [action.payload,...state]
         case INIT_TODO:
-            return [action.payload]
+            return [...action.payload]
         case EDIT_TODO:
-            return [action.payload,...state]
+            return state.map(t=>{
+                if(t.id === action.payload){
+                    console.log(Object.assign({},t,{editing:true}))
+                    return Object.assign({},t,{editing:true})
+                }else{
+                    return Object.assign({},t,{editing:false})
+                }
+            })
+        case UPDATE_TODO:
+            return state.map(t=>{
+                if(t.id === action.payload.id){
+                    return action.payload
+                }else{
+                    return t
+                }
+            })
         default:
             return state
     }

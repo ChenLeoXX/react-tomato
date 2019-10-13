@@ -1,7 +1,10 @@
 import * as React from 'react'
 import './TodoItem.scss'
 const classNames =require('classnames')
-import {Checkbox,Icon} from "antd"
+import {Checkbox, Icon, message} from "antd"
+import {connect} from "react-redux";
+import api from "../../config/axios";
+import { toggleEdit, updateItem} from "../../redux/action";
 
 interface PropsIF {
     description:string;
@@ -16,16 +19,12 @@ interface StateIF {
     editText:string;
 }
 
-export default class TodoItem extends React.Component<PropsIF, StateIF> {
+class TodoItem extends React.Component<PropsIF, StateIF> {
     constructor(props: PropsIF) {
         super(props)
         this.state = {
             editText:this.props.description
         }
-    }
-
-    update = (params:any)=>{
-        this.props.updateItem(this.props.id,params)
     }
 
     toEdit = ()=>{
@@ -35,7 +34,19 @@ export default class TodoItem extends React.Component<PropsIF, StateIF> {
     submit = (e:React.KeyboardEvent)=>{
         const {editText} = this.state
         if(e.keyCode === 13 &&editText !== ''){
-            this.update({description:editText})
+            this.updateItem({description:editText})
+        }
+    }
+
+    updateItem = async (params:any)=>{
+        try {
+            const {data:{resource},status} = await api.put(`todos/${this.props.id}`,params)
+            if(status === 200){
+                this.props.updateItem(resource)
+            }
+        }catch(e){
+            message.error(e)
+            console.log(e)
         }
     }
 
@@ -47,17 +58,17 @@ export default class TodoItem extends React.Component<PropsIF, StateIF> {
         })
         const input = (
           <div className="edit-wrapper">
-              <textarea value={this.state.editText} ref={(node)=>node&&node.focus()}
+              <input value={this.state.editText} ref={(node)=>node&&node.focus()}
                      onChange={e=>this.setState({editText:e.target.value})}
                      onKeyUp={e=>this.submit(e)}
               />
               <div className="icon-wrapper">
                   <Icon type="enter"
                         style={{'fill':'#bbb'}}
-                        onClick={e=>this.update({description:this.state.editText})}/>
+                        onClick={e=>this.updateItem({description:this.state.editText})}/>
                   <Icon type="delete"
                         style={{'fill':'#bbb'}}
-                        onClick={e=>this.update({deleted:true})}/>
+                        onClick={e=>this.updateItem({deleted:true})}/>
               </div>
           </div>
         );
@@ -65,10 +76,22 @@ export default class TodoItem extends React.Component<PropsIF, StateIF> {
         return (
             <div className={editClass}>
                 <Checkbox checked={this.props.completed}
-                          onChange={e=>this.update({completed:e.target.checked})}
+                          onChange={e=>this.updateItem({completed:e.target.checked})}
                 />
                 {this.props.editing? input:text}
             </div>
         );
     }
 }
+const mapStateToProps = (state:any,ownProps:object) => {
+    return {
+        todos:state.todos,
+        ...ownProps
+    }
+}
+
+const mapDispatchToProps = {
+    updateItem,
+    toggleEdit
+}
+export default connect(mapStateToProps,mapDispatchToProps)(TodoItem)

@@ -74,7 +74,7 @@ interface StateIF {
         );
     }
 }
-const mapStateToProps = (ownProps:object) => {
+const mapStateToProps = (state:any[],ownProps:object) => {
     return {
         ...ownProps
     }
