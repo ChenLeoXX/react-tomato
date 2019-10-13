@@ -4,7 +4,7 @@ const classNames =require('classnames')
 import {Checkbox, Icon, message} from "antd"
 import {connect} from "react-redux";
 import api from "../../config/axios";
-import { toggleEdit, updateItem} from "../../redux/action";
+import { toggleEdit, updateItem} from "../../redux/actions/todoAction";
 
 interface PropsIF {
     description:string;
@@ -46,7 +46,6 @@ class TodoItem extends React.Component<PropsIF, StateIF> {
             }
         }catch(e){
             message.error(e)
-            console.log(e)
         }
     }
 

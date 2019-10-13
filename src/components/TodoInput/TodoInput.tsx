@@ -3,7 +3,7 @@ import * as React from 'react'
 import {connect} from "react-redux";
 import {Input, message} from "antd";
 import api from "../../config/axios";
-import {addTodo} from "../../redux/action";
+import {addTodo} from "../../redux/actions/todoAction";
 import './TodoInput.scss';
 
 interface PropsIF {

@@ -8,7 +8,7 @@ import './App.scss';
 import Index from './components/Index/Index'
 import Login from './components/Login/Login'
 import SignUp from './components/SignUp/SignUp'
-
+import '../src/static/svg'
 class App extends React.Component{
     render(){
         return(

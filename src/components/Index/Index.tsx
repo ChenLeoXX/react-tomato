@@ -3,9 +3,11 @@ import {connect} from "react-redux";
 import api from '../../config/axios'
 import {RouteComponentProps} from "react-router-dom";
 import {Menu,Dropdown,Icon,Button} from "antd";
-import {initTodo} from "../../redux/action";
+import {initTodo} from "../../redux/actions/todoAction";
 import TodoInput from '../TodoInput/TodoInput'
 import TodoItem from '../TodoItem/TodoItem'
+import Tomatoes from '../Tomatoes/Tomatoes'
+import Empty from '../empty';
 import './Index.scss'
 
 interface PropsIF extends RouteComponentProps{
@@ -89,6 +91,22 @@ interface StateIF {
                 </Menu.Item>
             </Menu>
         );
+        const content = (
+            <div>
+                <div className="todo-items">
+                    {
+                        this.unCompletedTodo.map((t:any)=><TodoItem
+                            key={t.id} {...t}/>)
+                    }
+                </div>
+                <div className="todo-items completed">
+                    {
+                        this.completedTodo.map((t:any)=><TodoItem
+                            key={t.id} {...t}/>)
+                    }
+                </div>
+            </div>
+        );
         const {user} = this.state
         return (
             <div className="index-wrapper">
@@ -100,19 +118,15 @@ interface StateIF {
                         </Button>
                     </Dropdown>
                 </header>
-                <main>
-                    <div className="todos-outer">
-                        <TodoInput/>
-                        <div className="todo-items">
-                            {
-                                this.unCompletedTodo.map((t:any)=><TodoItem
-                                    key={t.id} {...t}/>)
-                            }
+                <main className="clearfix">
+                    <div className="tomato-app-action">
+                        <div className="tomatoes-outer">
+                            <Tomatoes/>
                         </div>
-                        <div className="todo-items completed">
+                        <div className="todos-outer">
+                            <TodoInput/>
                             {
-                                this.completedTodo.map((t:any)=><TodoItem
-                                    key={t.id} {...t}/>)
+                                this.props.todos.length > 0 ? content : <Empty text={"没有记录"}/>
                             }
                         </div>
                     </div>

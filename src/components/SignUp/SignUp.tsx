@@ -5,7 +5,7 @@ import api from '../../config/axios'
 import './SignUp.scss'
 import logo from '../../pomotodo_cn.png';
 interface PropsIF {
-
+    history:any
 }
 
 interface StateIF {
@@ -42,6 +42,7 @@ export default class SignUp extends React.Component<PropsIF, StateIF> {
                 }).then(res=> {
                     if (res.status === 200) {
                         message.success('注册成功')
+                        this.props.history.push('/login')
                     }
                 })
             }catch (e) {
