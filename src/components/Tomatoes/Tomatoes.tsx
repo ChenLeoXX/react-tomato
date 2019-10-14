@@ -41,7 +41,6 @@ class Tomatoes extends React.Component<PropsIF, StateIF> {
             const {data:{resource},status} =  await api.post('tomatoes',{
                 duration:1500000
             })
-            console.log(resource)
             if(status===200){
                 this.props.addTomato(resource)
             }else{

@@ -1,9 +1,11 @@
 import Icon from "antd/lib/icon";
 import * as React from 'react'
 import {Button,Input,message} from "antd";
-import CountDown from './CountDown'
+const classNames = require('classnames')
+// import CountDown from './CountDown';
+import CountDown from './CountDownHook';
 interface PropsIF {
-    addTomato:(payload:any)=>{};
+    addTomato:()=>{};
     updateTomato:(payload:any)=>{};
     readonly unFinishTomato:any;
 }
@@ -11,6 +13,7 @@ interface PropsIF {
 interface StateIF {
     description:string;
     isFocus:boolean;
+    notCounting:boolean;
 }
 
 export default class TomatoAction extends React.Component<PropsIF, StateIF> {
@@ -18,7 +21,8 @@ export default class TomatoAction extends React.Component<PropsIF, StateIF> {
         super(props)
         this.state = {
             description:'',
-            isFocus:false
+            isFocus:false,
+            notCounting:true
         }
     }
 
@@ -38,13 +42,20 @@ export default class TomatoAction extends React.Component<PropsIF, StateIF> {
 
     finishRender=()=>{
         this.forceUpdate()
+        this.setState({notCounting:true})
+    }
+
+    addTomato = ()=>{
+        this.props.addTomato()
+        this.setState({notCounting:false})
     }
 
     computedTime= ()=>{
-        const {created_at} = this.props.unFinishTomato
-        const isRemain = 50000 > (Date.now() - Date.parse(created_at))
+        const {created_at,duration} = this.props.unFinishTomato
+        const isRemain = duration > (Date.now() - Date.parse(created_at)+2000)
         if(isRemain){
-            return (<CountDown finish={this.finishRender} timer = {50000 - (Date.now() - Date.parse(created_at))}/>)
+            return (<CountDown finish={this.finishRender}
+                               timer = {duration -(Date.now() - Date.parse(created_at)+2000)}/>)
         }else{
             const suffix = this.state.isFocus ? <Icon type="enter" onClick={e=>this.submit(e,true)}/> : <span />;
             return (<Input value={this.state.description} style={{height:'40px'}}
@@ -58,11 +69,14 @@ export default class TomatoAction extends React.Component<PropsIF, StateIF> {
 
     howToRender = ()=>{
         let content
+        const btnClass = classNames({
+            'not-counting':this.state.notCounting
+        })
         if(this.props.unFinishTomato){
             content = this.computedTime()
         }else{
             content = (
-                <Button  block onClick={this.props.addTomato}>
+                <Button className={btnClass} block onClick={this.addTomato}>
                     开始番茄
                 </Button>
             );

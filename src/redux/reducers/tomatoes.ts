@@ -14,7 +14,6 @@ export default (state:any[]=[],action:ActionIF) =>{
         case UPDATE_TOMATO:
             return state.map(t=>{
                 if(t.id === action.payload.id){
-                    console.log(action.payload);
                     return action.payload
                 }else{
                     return t
