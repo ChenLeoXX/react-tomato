@@ -61,7 +61,7 @@ class Tomatoes extends React.Component<PropsIF, StateIF> {
     }
 
     get unFinishTomato(){
-        return this.props.tomatoes.filter(t=> !t.description && !t.ended_at)[0]
+        return this.props.tomatoes.filter(t=> !t.description && !t.ended_at && !t.aborted)[0]
     }
 
 

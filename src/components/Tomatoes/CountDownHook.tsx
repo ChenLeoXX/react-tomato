@@ -27,7 +27,7 @@ const CountDown:React.FC<ICountDown>= (props) =>{
         return function(){
             clearInterval(timerId)
         }
-    })
+    },[])
     return (
         <div className="count-down">
             <p>{displayTime}</p>

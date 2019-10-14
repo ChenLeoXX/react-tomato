@@ -1,9 +1,8 @@
-import Icon from "antd/lib/icon";
 import * as React from 'react'
-import {Button,Input,message} from "antd";
+import {Button,Input,message,Icon} from "antd";
 const classNames = require('classnames')
-// import CountDown from './CountDown';
-import CountDown from './CountDownHook';
+import CountDown from './CountDown';
+// import CountDown from './CountDownHook';
 interface PropsIF {
     addTomato:()=>{};
     updateTomato:(payload:any)=>{};
@@ -55,6 +54,7 @@ export default class TomatoAction extends React.Component<PropsIF, StateIF> {
         const isRemain = duration > (Date.now() - Date.parse(created_at)+2000)
         if(isRemain){
             return (<CountDown finish={this.finishRender}
+                               updateTomato={this.props.updateTomato}
                                timer = {duration -(Date.now() - Date.parse(created_at)+2000)}/>)
         }else{
             const suffix = this.state.isFocus ? <Icon type="enter" onClick={e=>this.submit(e,true)}/> : <span />;
