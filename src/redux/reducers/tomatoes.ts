@@ -1,4 +1,4 @@
-import {INIT_TOMATO, ADD_TOMATO} from "../actionTypes";
+import {INIT_TOMATO, ADD_TOMATO,UPDATE_TOMATO} from "../actionTypes";
 
 interface ActionIF {
     type:String,
@@ -11,6 +11,15 @@ export default (state:any[]=[],action:ActionIF) =>{
             return [action.payload,...state]
         case INIT_TOMATO:
             return [...action.payload]
+        case UPDATE_TOMATO:
+            return state.map(t=>{
+                if(t.id === action.payload.id){
+                    console.log(action.payload);
+                    return action.payload
+                }else{
+                    return t
+                }
+            })
         default:
             return state
     }

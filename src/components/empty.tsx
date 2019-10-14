@@ -1,6 +1,5 @@
 import * as React from "react";
-const empty:React.FunctionComponent<{text:string}>= (props:any)=>{
-    console.log(props)
+const empty:React.FC<{text:string}>= (props:any)=>{
     return (
         <div className="empty-wrapper">
             <svg className=" empty-icon icon" aria-hidden="true">

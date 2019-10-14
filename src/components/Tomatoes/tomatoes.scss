@@ -1,3 +1,31 @@
 .tomatoes-wrapper {
-
+   .tomato-action-wrapper {
+     .ant-btn.ant-btn-block {
+       height: 40px;
+       background-color: rgb(244, 244, 244);
+       color: rgb(102, 102, 102);
+       font-weight: 500;
+       font-size: 16px;
+       &:hover {
+         border-color: rgb(217,217,217);
+       }
+     }
+   }
+ }
+.count-down {
+  color: rgb(102, 102, 102);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 38px;
+  min-height: 40px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  p {
+    box-shadow: none;
+    background: #f4f4f4;
+    border:1px solid #BBB;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    user-select: none;
+  }
 }

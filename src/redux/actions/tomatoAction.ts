@@ -1,4 +1,4 @@
-import {INIT_TOMATO,ADD_TOMATO} from "../actionTypes";
+import {INIT_TOMATO,ADD_TOMATO,UPDATE_TOMATO} from "../actionTypes";
 
 export const addTomato = (payload:any)=>{
     return {
@@ -9,6 +9,13 @@ export const addTomato = (payload:any)=>{
 export const initTomato = (payload:any)=>{
     return {
         type:INIT_TOMATO,
+        payload
+    }
+}
+
+export const updateTomato = (payload:any)=>{
+    return {
+        type:UPDATE_TOMATO,
         payload
     }
 }

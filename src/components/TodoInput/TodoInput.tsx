@@ -26,6 +26,7 @@ interface StateIF {
     //区分点击提交和回车提交
     addNewTodo = async (e?:React.KeyboardEvent,isSubmit:boolean = false)=>{
         if(e&&e.keyCode === 13 && !isSubmit){
+            if((e.target as HTMLInputElement).value === '') return message.info('请输入任务内容!')
             try {
                 const response = await api.post('todos',{
                     description:(e.target as HTMLInputElement).value
@@ -42,6 +43,7 @@ interface StateIF {
             }
             this.setState({description:''})
         }else if(isSubmit){
+            if(this.state.description === '') return message.info('请输入任务内容!')
             try {
                 const response = await  api.post('todos',{
                     description:this.state.description

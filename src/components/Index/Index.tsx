@@ -67,14 +67,12 @@ interface StateIF {
         return this.unDeletedTodo.filter(t=>t.completed)
     }
 
-    logout = ()=>{
+     logout = ()=>{
         localStorage.setItem('token','')
         this.props.history.push('login')
     }
-    async componentDidMount() {
+     async componentDidMount() {
         await this.getTodos()
-    }
-    async componentWillMount(){
         await this.getUser()
     }
 
@@ -126,7 +124,7 @@ interface StateIF {
                         <div className="todos-outer">
                             <TodoInput/>
                             {
-                                this.props.todos.length > 0 ? content : <Empty text={"没有记录"}/>
+                                this.unCompletedTodo.length === 0 ?  <Empty text={"没有记录"}/>:content
                             }
                         </div>
                     </div>
