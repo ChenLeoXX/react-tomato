@@ -52,7 +52,12 @@ export default class SignUp extends React.Component<PropsIF, StateIF> {
             }
     }
     validate = ()=>{
-        this.signUp()
+        const {account,password} = this.state
+        if(account !== '' && password !== '') {
+            this.signUp()
+        }else{
+            message.info('请输入完整!')
+        }
     }
     render() {
         return (

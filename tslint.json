@@ -12,6 +12,7 @@
     "ordered-imports": false,
     "member-access": false,
     "no-console": false,
-    "no-implicit-returns": true
+    "no-implicit-returns": true,
+    "only-arrow-functions": false
   }
 }

@@ -1,9 +1,12 @@
+import {format, parseISO} from "date-fns";
 import * as React from 'react'
 import {connect} from "react-redux";
 import {addTomato,initTomato,updateTomato} from "../../redux/actions/tomatoAction";
 import TomatoAction from './TomatoAction'
+import TomatoList from '../TomatoList/TomatoList'
 import api from '../../config/axios'
 import './tomatoes.scss'
+import groupBy from 'lodash/groupBy'
 interface PropsIF {
     addTomato:(payload:any)=>{};
     initTomato:(payload:any)=>{};
@@ -64,7 +67,12 @@ class Tomatoes extends React.Component<PropsIF, StateIF> {
         return this.props.tomatoes.filter(t=> !t.description && !t.ended_at && !t.aborted)[0]
     }
 
-
+    get finishedTomato(){
+        const list  = this.props.tomatoes.filter(t=>t.description &&t.ended_at && !t.aborted)
+        return groupBy(list,(t)=>{
+            return format(parseISO(t.started_at), 'yyyy-MM-dd')
+        })
+    }
 
     render() {
         return (
@@ -72,6 +80,9 @@ class Tomatoes extends React.Component<PropsIF, StateIF> {
                 <TomatoAction addTomato={this.addTomato}
                               updateTomato={this.updateTomato}
                               unFinishTomato={this.unFinishTomato}/>
+                <div className="tomato-lists">
+                    <TomatoList tomatoObj={this.finishedTomato}/>
+                </div>
             </div>
         );
     }
