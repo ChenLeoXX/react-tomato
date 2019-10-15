@@ -4,6 +4,7 @@ import api from '../../config/axios'
 import {RouteComponentProps} from "react-router-dom";
 import {Menu,Dropdown,Icon,Button} from "antd";
 import {initTodo} from "../../redux/actions/todoAction";
+import {initTomato} from "../../redux/actions/tomatoAction";
 import TodoInput from '../TodoInput/TodoInput'
 import TodoItem from '../TodoItem/TodoItem'
 import Tomatoes from '../Tomatoes/Tomatoes'
@@ -13,7 +14,8 @@ import './Index.scss'
 interface PropsIF extends RouteComponentProps{
     todos:any[];
     updateItem:Function;
-    initTodo:Function;
+    initTodo:(payload:any)=>void;
+    initTomato:(payload:any)=>void;
     toggleEdit:Function;
 }
 
@@ -41,6 +43,19 @@ interface StateIF {
 
         }
     }
+
+     getTomato = async ()=>{
+         try {
+             const {data:{resources},status}=  await api.get('tomatoes')
+             if(status===200){
+                 this.props.initTomato(resources)
+             }else{
+
+             }
+         }catch(e){
+             throw new Error(e)
+         }
+     }
 
     getTodos = async ()=>{
         try {
@@ -72,8 +87,9 @@ interface StateIF {
         this.props.history.push('login')
     }
      async componentDidMount() {
-        await this.getTodos()
-        await this.getUser()
+         await this.getTodos()
+         await this.getTomato()
+         await this.getUser()
     }
 
     render() {
@@ -141,6 +157,7 @@ const mapStateToProps = (state:any,ownProps:object) => {
 }
 
 const mapDispatchToProps = {
-    initTodo
+    initTodo,
+    initTomato
 }
 export  default connect(mapStateToProps,mapDispatchToProps)(Index)

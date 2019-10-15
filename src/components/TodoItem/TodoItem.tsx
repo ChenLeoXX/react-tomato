@@ -39,6 +39,9 @@ class TodoItem extends React.Component<PropsIF, StateIF> {
     }
 
     updateItem = async (params:any)=>{
+        if(params.completed){
+            params.completed_at = new Date()
+        }
         try {
             const {data:{resource},status} = await api.put(`todos/${this.props.id}`,params)
             if(status === 200){

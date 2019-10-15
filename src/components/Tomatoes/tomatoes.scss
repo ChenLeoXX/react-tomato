@@ -1,5 +1,7 @@
 .tomatoes-wrapper {
    .tomato-action-wrapper {
+     padding-bottom: 16px;
+     border-bottom: 1px solid #ddd;
      .ant-btn.ant-btn-block {
        height: 40px;
        background-color: rgb(244, 244, 244);
@@ -12,15 +14,19 @@
      }
    }
   .tomato-lists {
-    padding: 16px 0 ;
-    max-height: 20em;
+    padding-top: 16px;
+    height: 20em;
     line-height: 1.5em;
     overflow: hidden;
+    .child {
+      width: calc(100% + 17px);
+      overflow-y: scroll;
+      padding-right: 17px;
+      height: 100%;
+    }
   }
  }
 .countdown-wrapper {
-  padding-bottom: 1px;
-  border-bottom: 1px solid #ddd;
   .count-down {
     color: rgb(102, 102, 102);
     font-weight: 500;
@@ -29,7 +35,6 @@
     min-height: 40px;
     text-align: center;
     position: relative;
-    margin-bottom: 16px;
     background: #f4f4f4;
     p {
       border:1px solid #ccc;

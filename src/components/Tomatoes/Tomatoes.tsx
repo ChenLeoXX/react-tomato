@@ -1,15 +1,15 @@
 import {format, parseISO} from "date-fns";
 import * as React from 'react'
 import {connect} from "react-redux";
-import {addTomato,initTomato,updateTomato} from "../../redux/actions/tomatoAction";
+import {addTomato,updateTomato} from "../../redux/actions/tomatoAction";
 import TomatoAction from './TomatoAction'
 import TomatoList from '../TomatoList/TomatoList'
 import api from '../../config/axios'
 import './tomatoes.scss'
+import Empty from '../empty'
 import groupBy from 'lodash/groupBy'
 interface PropsIF {
     addTomato:(payload:any)=>{};
-    initTomato:(payload:any)=>{};
     updateTomato:(payload:any)=>{};
     tomatoes:any[];
 }
@@ -21,22 +21,6 @@ interface StateIF {
 class Tomatoes extends React.Component<PropsIF, StateIF> {
     constructor(props: PropsIF) {
         super(props)
-    }
-
-    componentDidMount() {
-        this.getTomato()
-    }
-    getTomato = async ()=>{
-        try {
-            const {data:{resources},status}=  await api.get('tomatoes')
-            if(status===200){
-                this.props.initTomato(resources)
-            }else{
-
-            }
-        }catch(e){
-            throw new Error(e)
-        }
     }
 
     addTomato = async ()=>{
@@ -81,7 +65,11 @@ class Tomatoes extends React.Component<PropsIF, StateIF> {
                               updateTomato={this.updateTomato}
                               unFinishTomato={this.unFinishTomato}/>
                 <div className="tomato-lists">
-                    <TomatoList tomatoObj={this.finishedTomato}/>
+                    <div className="child">
+                        {
+                            Object.keys(this.finishedTomato).length > 0 ?<TomatoList tomatoObj={this.finishedTomato}/> :<Empty text={'没有记录'}/>
+                        }
+                    </div>
                 </div>
             </div>
         );
@@ -96,7 +84,6 @@ const mapStateToProps = (state:any,ownProps:object) => {
 
 const mapDispatchToProps = {
     addTomato,
-    initTomato,
     updateTomato
 }
 export  default connect(mapStateToProps,mapDispatchToProps)(Tomatoes)
