@@ -37,13 +37,13 @@ interface StateIF {
 
     getUser = async ()=>{
         try {
-            await  api.get('me').then(res=>{
-                if(res.status === 200){
-                    this.setState({user:res.data})
-                }
-            })
+            const {data,status} =  await api.get('me')
+            if(status === 200){
+                this.setState({user:data})
+            }
+            return true
         }catch (e) {
-
+            throw new Error(e)
         }
     }
 
@@ -52,9 +52,8 @@ interface StateIF {
              const {data:{resources},status}=  await api.get('tomatoes')
              if(status===200){
                  this.props.initTomato(resources)
-             }else{
-
              }
+             return true
          }catch(e){
              throw new Error(e)
          }
@@ -68,6 +67,7 @@ interface StateIF {
                 return t
             })
             this.props.initTodo(newState)
+            return true
         }catch(e){
             throw new Error(e)
         }
@@ -90,9 +90,8 @@ interface StateIF {
         this.props.history.push('login')
     }
      async componentDidMount() {
-         await this.getTodos()
-         await this.getTomato()
-         await this.getUser()
+        const res = await  Promise.all([this.getTodos(),this.getTomato(),this.getUser()])
+         console.log(res)
     }
 
     render() {

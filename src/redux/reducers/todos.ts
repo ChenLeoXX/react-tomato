@@ -13,7 +13,6 @@ export default (state:any[]=[],action:ActionIF) =>{
         case EDIT_TODO:
             return state.map(t=>{
                 if(t.id === action.payload){
-                    console.log(Object.assign({},t,{editing:true}))
                     return Object.assign({},t,{editing:true})
                 }else{
                     return Object.assign({},t,{editing:false})

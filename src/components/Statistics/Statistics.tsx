@@ -85,7 +85,6 @@ class Statistics extends React.Component<PropsIF, StateIF> {
     }
 
     render() {
-        console.log(this.finishedTodo)
         const {activeTab} = this.state
         return (
             <main className="statistics-wrapper">
