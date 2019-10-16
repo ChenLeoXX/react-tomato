@@ -1,7 +1,6 @@
 /**
   common css
  */
-
 *,*::after,*::before {
   box-sizing: border-box;
 }
@@ -21,6 +20,25 @@ ul,li {
 /**
   component css
  */
+.global-loading {
+  position: absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index: 100;
+  background: #fdfdfd;
+  .loading-img {
+    position: absolute;
+    top:40%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    img {
+      width: 64px;
+      height: 64px;
+    }
+  }
+}
 
 .icon {
   width: 1em; height: 1em;

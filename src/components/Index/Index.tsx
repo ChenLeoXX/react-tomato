@@ -1,4 +1,5 @@
 import * as React from 'react'
+import ReactDom from 'react-dom'
 import {connect} from "react-redux";
 import api from '../../config/axios'
 import {RouteComponentProps} from "react-router-dom";
@@ -11,6 +12,7 @@ import TodoItem from '../TodoItem/TodoItem'
 import Tomatoes from '../Tomatoes/Tomatoes'
 import Statistics from '../Statistics/Statistics'
 import Empty from '../empty';
+import Loading from '../Loading'
 import './Index.scss'
 
 interface PropsIF extends RouteComponentProps{
@@ -24,6 +26,7 @@ interface PropsIF extends RouteComponentProps{
 interface StateIF {
     user:any,
     panelVisible:boolean,
+    isLoading:boolean
 }
 
  class Index extends React.Component<PropsIF, StateIF> {
@@ -31,6 +34,7 @@ interface StateIF {
         super(props)
         this.state = {
             user:{},
+            isLoading:false,
             panelVisible:false,
         }
     }
@@ -90,8 +94,14 @@ interface StateIF {
         this.props.history.push('login')
     }
      async componentDidMount() {
+        const DIV =document.createElement("DIV")
+         document.body.appendChild(DIV)
+         ReactDom.render(<Loading isLoading={this.state.isLoading}/>,DIV)
         const res = await  Promise.all([this.getTodos(),this.getTomato(),this.getUser()])
-         console.log(res)
+         if(res.every(loaded=>loaded)) {
+             this.setState({isLoading:false})
+             DIV.remove()
+         }
     }
 
     render() {
