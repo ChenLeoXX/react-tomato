@@ -9,6 +9,7 @@ import {initTomato} from "../../redux/actions/tomatoAction";
 import TodoInput from '../TodoInput/TodoInput'
 import TodoItem from '../TodoItem/TodoItem'
 import Tomatoes from '../Tomatoes/Tomatoes'
+import Statistics from '../Statistics/Statistics'
 import Empty from '../empty';
 import './Index.scss'
 
@@ -81,7 +82,7 @@ interface StateIF {
     }
 
     get completedTodo(){
-        return this.unDeletedTodo.filter(t=>t.completed)
+        return this.unDeletedTodo.filter(t=>t.completed).splice(0,10)
     }
 
      logout = ()=>{
@@ -153,6 +154,7 @@ interface StateIF {
                         </div>
                     </div>
                 </main>
+                <Statistics/>
             </div>
         );
     }

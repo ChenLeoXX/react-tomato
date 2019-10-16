@@ -1,4 +1,5 @@
 import {format, parseISO} from "date-fns";
+import groupBy from 'lodash/groupBy'
 import * as React from 'react'
 import {connect} from "react-redux";
 import {addTomato,updateTomato} from "../../redux/actions/tomatoAction";
@@ -7,7 +8,6 @@ import TomatoList from '../TomatoList/TomatoList'
 import api from '../../config/axios'
 import './tomatoes.scss'
 import Empty from '../empty'
-import groupBy from 'lodash/groupBy'
 interface PropsIF {
     addTomato:(payload:any)=>{};
     updateTomato:(payload:any)=>{};

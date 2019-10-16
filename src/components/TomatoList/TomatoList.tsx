@@ -33,7 +33,6 @@ export default class TomatoList extends React.Component<PropsIF, StateIF> {
     dates(){
         return Object.keys(this.props.tomatoObj)
             .sort((a:string,b:string) => (+new Date(b) - +new Date(a)))
-            .splice(0,3)
     }
 
     renderList(){

@@ -1,8 +1,27 @@
+/**
+  common css
+ */
+
+*,*::after,*::before {
+  box-sizing: border-box;
+}
+
+ul,li {
+  list-style: none;
+  padding: 0;
+  margin:0;
+}
+
 .clearfix::after {
   content:'';
   display: block;
   clear:both;
 }
+
+/**
+  component css
+ */
+
 .icon {
   width: 1em; height: 1em;
   vertical-align: -0.15em;
@@ -64,7 +83,7 @@ main {
               padding-left: 0;
               .ant-btn {
                 border: 1px solid #ccc;
-                padding: 3px 8px 3px 2px;
+                padding: 4px;
                 font-size: 13px;
                 color:#888;
               }
