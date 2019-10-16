@@ -2,7 +2,8 @@ import * as React from 'react'
 import {connect} from "react-redux";
 import api from '../../config/axios'
 import {RouteComponentProps} from "react-router-dom";
-import {Menu,Dropdown,Icon,Button} from "antd";
+import {Menu,Dropdown,Icon,Button,Collapse} from "antd";
+const { Panel } = Collapse;
 import {initTodo} from "../../redux/actions/todoAction";
 import {initTomato} from "../../redux/actions/tomatoAction";
 import TodoInput from '../TodoInput/TodoInput'
@@ -21,6 +22,7 @@ interface PropsIF extends RouteComponentProps{
 
 interface StateIF {
     user:any,
+    panelVisible:boolean,
 }
 
  class Index extends React.Component<PropsIF, StateIF> {
@@ -28,7 +30,7 @@ interface StateIF {
         super(props)
         this.state = {
             user:{},
-            // todos:[]
+            panelVisible:false,
         }
     }
 
@@ -93,6 +95,7 @@ interface StateIF {
     }
 
     render() {
+        const {panelVisible} = this.state
         const menu = (
             <Menu>
                 <Menu.Item key="1">
@@ -110,12 +113,6 @@ interface StateIF {
                 <div className="todo-items">
                     {
                         this.unCompletedTodo.map((t:any)=><TodoItem
-                            key={t.id} {...t}/>)
-                    }
-                </div>
-                <div className="todo-items completed">
-                    {
-                        this.completedTodo.map((t:any)=><TodoItem
                             key={t.id} {...t}/>)
                     }
                 </div>
@@ -142,6 +139,17 @@ interface StateIF {
                             {
                                 this.unCompletedTodo.length === 0 ?  <Empty text={"没有记录"}/>:content
                             }
+                            <div className="todo-items completed">
+                                <Collapse bordered={false} onChange={()=>{this.setState({panelVisible:!panelVisible})}}>
+                                    <Panel showArrow={false}  key="1"
+                                           header={<Button icon={panelVisible ? "down":"right"}>最近完成的任务</Button>}>
+                                        {
+                                            this.completedTodo.map((t:any)=><TodoItem
+                                                key={t.id} {...t}/>)
+                                        }
+                                    </Panel>
+                                </Collapse>
+                            </div>
                         </div>
                     </div>
                 </main>

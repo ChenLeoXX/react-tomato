@@ -12,7 +12,7 @@ interface StateIF {
 
 function TomatoItem(props:any){
     return (
-        <div className="item-wrapper" key={props.id}>
+        <div className="item-wrapper">
           <span className="date-range">
               {
                   `${format(parseISO(props.created_at),'HH:mm')} - ${format(parseISO(props.ended_at),'HH:mm')}`
@@ -51,7 +51,7 @@ export default class TomatoList extends React.Component<PropsIF, StateIF> {
                     </div>
                     {
                         dateTomatoes.map(d => {
-                            return <TomatoItem {...d}/>
+                            return <TomatoItem key={d.id} {...d}/>
                         })
                     }
                 </div>

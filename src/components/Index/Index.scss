@@ -56,6 +56,20 @@ main {
         &.completed {
           margin-top: 0px;
           border-top:none;
+          .ant-collapse-no-arrow {
+            border-bottom: none;
+            .ant-collapse-header {
+              padding-top:8px;
+              padding-bottom:8px;
+              padding-left: 0;
+              .ant-btn {
+                border: 1px solid #ccc;
+                padding: 3px 8px 3px 2px;
+                font-size: 13px;
+                color:#888;
+              }
+            }
+          }
         }
       }
     }
