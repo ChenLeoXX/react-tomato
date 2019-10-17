@@ -51,11 +51,11 @@ export default class TomatoAction extends React.Component<PropsIF, StateIF> {
 
     computedTime= ()=>{
         const {created_at,duration} = this.props.unFinishTomato
-        const isRemain = duration > (Date.now() - Date.parse(created_at)+2000)
+        const isRemain = duration > (Date.now() - Date.parse(created_at))
         if(isRemain){
             return (<CountDown finish={this.finishRender}
                                updateTomato={this.props.updateTomato}
-                               timer = {duration -(Date.now() - Date.parse(created_at)+2000)}/>)
+                               timer = {duration -(Date.now() - Date.parse(created_at))}/>)
         }else{
             const suffix = this.state.isFocus ? <Icon type="enter" onClick={e=>this.submit(e,true)}/> : <span />;
             return (<Input value={this.state.description} style={{height:'40px'}}

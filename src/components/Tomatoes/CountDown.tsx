@@ -55,7 +55,7 @@ export default class CountDown extends React.Component<PropsIF, StateIF> {
             }else{
                 this.setState({countdown:time})
                 const times = this.calcTime()
-                document.title = `番茄闹钟-${times}`
+                document.title = `${times}-番茄闹钟`
             }
             
         },1000)

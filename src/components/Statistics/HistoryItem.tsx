@@ -7,6 +7,7 @@ import {updateItem} from "../../redux/actions/todoAction";
 import {updateTomato} from "../../redux/actions/tomatoAction";
 
 interface PropsIF {
+    manually_created:boolean
     description:string
     completed_at:string
     updated_at:string
@@ -32,12 +33,14 @@ class HistoryItem extends React.Component<PropsIF, StateIF> {
         }
     }
 
-    updateTomato = async (params:any)=>{
+    updateTomato = async (params:any,type:string)=>{
         try {
             const {data:{resource},status} = await api.put(`tomatoes/${this.props.id}`,params)
             if(status === 200){
                 this.props.updateTomato(resource)
-                this.setState({isTomatoEdit:false})
+                if(type==='update'){
+                    this.setState({isTomatoEdit:false})
+                }
             }
         }catch(e){
             message.error(e)
@@ -57,7 +60,7 @@ class HistoryItem extends React.Component<PropsIF, StateIF> {
 
     submitEdit = (e:React.KeyboardEvent)=>{
         if(e.keyCode===13){
-            this.updateTomato({description:this.state.desc})
+            this.updateTomato({description:this.state.desc},'update')
         }
     }
 
@@ -109,19 +112,21 @@ class HistoryItem extends React.Component<PropsIF, StateIF> {
                                            onKeyUp={(e)=>{this.submitEdit(e)}}
                                            onChange={(e)=>{this.setState({desc:e.target.value})}} />
                                     : (<span className="desc">{this.props.description}</span>)
-
+                                }
+                                {
+                                    this.props.manually_created && !this.state.isTomatoEdit? (<span className="patched">(补)</span>):null
                                 }
                         </div>
                         {
                             this.state.isTomatoEdit ?
                                 <div className="action-wrapper">
-                                    <span className="reset" onClick={()=>{this.updateTomato({description:this.state.desc})}}>提交</span>
+                                    <span className="reset" onClick={()=>{this.updateTomato({description:this.state.desc},'update')}}>提交</span>
                                     <span className="delete" onClick={()=>{this.setState({isTomatoEdit:false})}}>取消</span>
                                 </div>
                              :
                                 <div className="action-wrapper">
                                     <span className="reset" onClick={()=>{this.setState({isTomatoEdit:true})}}>编辑</span>
-                                    <span className="delete" onClick={()=>{this.updateTomato({aborted:true})}}>删除</span>
+                                    <span className="delete" onClick={()=>{this.updateTomato({aborted:true},'delete')}}>删除</span>
                                 </div>
 
                         }
@@ -145,14 +150,14 @@ class HistoryItem extends React.Component<PropsIF, StateIF> {
                                     <Input value={this.state.desc}
                                            onKeyUp={(e)=>{this.submitEdit(e)}}
                                            onChange={(e)=>{this.setState({desc:e.target.value})}} />
-                                    : (<span className="desc">{this.props.description ? this.props.description:'没有该番茄打断描述'}</span>)
+                                    : (<span className="desc">{this.props.description ? this.props.description:'番茄描述为空 '}</span>)
 
                             }
                         </div>
                         {
                             this.state.isTomatoEdit ?
                                 <div className="action-wrapper">
-                                    <span className="reset" onClick={()=>{this.updateTomato({description:this.state.desc})}}>提交</span>
+                                    <span className="reset" onClick={()=>{this.updateTomato({description:this.state.desc},'update')}}>提交</span>
                                     <span className="delete" onClick={()=>{this.setState({isTomatoEdit:false})}}>取消</span>
                                 </div>
                                 :
