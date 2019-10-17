@@ -54,7 +54,7 @@ class Tomatoes extends React.Component<PropsIF, StateIF> {
     get finishedTomato(){
         const list  = this.props.tomatoes.filter(t=>t.description &&t.ended_at && !t.aborted)
         return groupBy(list,(t)=>{
-            return format(parseISO(t.started_at), 'yyyy-MM-dd')
+            return format(parseISO(t.ended_at), 'yyyy-MM-dd')
         })
     }
 

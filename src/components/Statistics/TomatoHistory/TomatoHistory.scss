@@ -1,0 +1,32 @@
+.daily-tomato {
+  border: 1px solid #ddd;
+  padding: 14px;
+  border-radius: 4px;
+  display: flex;
+  margin-bottom: 16px;
+  &:last-child {
+    margin-bottom: 0;
+  }
+  .date {
+    flex-shrink: 0;
+    flex-basis: 30%;
+    font-size: 14px;
+    .weekday {
+      color:#888;
+      margin-left: 8px;
+    }
+    .title {
+      color:#222;
+    }
+    .desc {
+      margin-top: 10px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      color:#888;
+      .tomato-hours {
+        margin-top: 9px;
+      }
+    }
+  }
+}

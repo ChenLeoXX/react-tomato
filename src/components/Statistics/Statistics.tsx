@@ -4,6 +4,7 @@ import {format, parseISO} from "date-fns";
 import groupBy from 'lodash/groupBy'
 import Polygon from './Polygon'
 import TodoHistory from './TodoHistory/TodoHistory'
+import TomatoHistory from './TomatoHistory/TomatoHistory'
 import './Statistics.scss'
 interface PropsIF {
     todos:any[],
@@ -25,15 +26,25 @@ class Statistics extends React.Component<PropsIF, StateIF> {
     get dailyTodos(){
         if(this.finishedTodo.length > 0){
             return groupBy(this.finishedTodo,(t)=>{
-                return format(parseISO(t.updated_at), 'yyyy-MM-dd')
+                return format(parseISO(t.completed_at), 'yyyy-MM-dd')
             })
         }else{
             return {}
         }
     }
 
-    get points(){
-        const dates = Object.keys(this.dailyTodos).sort((a,b)=>Date.parse(a) - Date.parse(b))
+    get dailyTomatos(){
+        if(this.finishedTomato.length >0){
+            return groupBy(this.finishedTomato,(t)=>{
+                 return format(parseISO(t.ended_at), 'yyyy-MM-dd')
+            })
+        }else{
+            return {}
+        }
+    }
+
+    getPoints = (objType:any,finishArr:any[])=>{
+        const dates = Object.keys(objType).sort((a,b)=>Date.parse(a) - Date.parse(b))
         if(dates.length ===0 ) return undefined
         const firstDay = dates[0]
         const lastDay = dates[dates.length-1]
@@ -42,20 +53,21 @@ class Statistics extends React.Component<PropsIF, StateIF> {
         //累计的任务数量
         let todoCounts = 0
         const pointArr =  dates.map((d)=>{
-            const dailyTodoArr = this.dailyTodos[d]
+            const dailyTodoArr = objType[d]
             todoCounts += dailyTodoArr.length
             let x = (Date.parse(d) - Date.parse(firstDay)) /range * 319
             x = isNaN(x) ? 0 : x
-            const y = (1 - (todoCounts/this.finishedTodo.length))*60
+            const y = (1 - (todoCounts/finishArr.length))*60
             lastY  = y
             return `${x},${y}`
         })
         if(pointArr.length>0){
             return ['0,60',...pointArr,`319,${lastY}`,'319,60'].join(' ')
         }else{
-           return '0,60 319,60'
+            return '0,60 319,60'
         }
     }
+
     get finishedTodo(){
         return this.props.todos.filter(t=>t.completed &&!t.deleted &&t.completed_at !== null)
     }
@@ -70,7 +82,7 @@ class Statistics extends React.Component<PropsIF, StateIF> {
             case 'todo':
                 return <TodoHistory finishedTodo={this.finishedTodo}/>
             case 'tomatoes':
-                return ''
+                return <TomatoHistory finishedTomato={this.finishedTomato} />
             case 'statistics':
                 return ''
             default:
@@ -85,6 +97,8 @@ class Statistics extends React.Component<PropsIF, StateIF> {
     }
 
     render() {
+        const todoPoint = this.getPoints(this.dailyTodos,this.finishedTodo)
+        const tomatoPoint = this.getPoints(this.dailyTomatos,this.finishedTomato)
         const {activeTab} = this.state
         return (
             <main className="statistics-wrapper">
@@ -103,7 +117,7 @@ class Statistics extends React.Component<PropsIF, StateIF> {
                             <span className="desc">累计完成番茄</span>
                             <span className="count">{this.finishedTomato.length}</span>
                         </div>
-                        <Polygon/>
+                        <Polygon p_points={tomatoPoint}/>
                     </li>
                     <li className={activeTab === "todo"?'tab-item active':'tab-item'} onClick={()=>{this.activeTabFn('todo')}}>
                         <div className="details">
@@ -111,7 +125,7 @@ class Statistics extends React.Component<PropsIF, StateIF> {
                             <span className="desc">累计完成任务</span>
                             <span className="count">{this.finishedTodo.length}</span>
                         </div>
-                        <Polygon p_points={this.points}/>
+                        <Polygon p_points={todoPoint}/>
                     </li>
                 </ul>
                     {

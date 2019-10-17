@@ -4,7 +4,7 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
-    padding: 8px 66px 8px 8px;
+    padding: 8px 85px 8px 8px;
     position: relative;
     &:hover {
       background: #f4f4f4;
@@ -17,7 +17,9 @@
       right: 10px;
       display: none;
       cursor: pointer;
-      color:#1890ff;
+      color:#0881B3;
+      top: 50%;
+      transform: translateY(-50%);
       .delete {
         margin-left: 8px;
       }
@@ -27,9 +29,24 @@
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
-      .time {
-        color:#888;
-        margin-right: 10px;
+      display: flex;
+      align-items: center;
+      .times {
+        width: 100px;
+        display: inline-block;
+        &.delete-tomato {
+          width: auto;
+          .day-time {
+            margin-right: 30px;
+          }
+        }
+        .time {
+          color:#888;
+          margin-right: 10px;
+          &.tomato-item:first-child{
+            margin-right: 0;
+          }
+        }
       }
     }
 
@@ -62,7 +79,7 @@
     }
   }
 }
-.history-statistics-wrapper {
+.history-statistics-wrapper,.tomato-statistics-wrapper{
   .ant-pagination-total-text {
     float: right;
   }
