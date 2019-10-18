@@ -1,0 +1,65 @@
+.daily-tips {
+  .ant-tooltip-inner {
+    background-color: rgba(200,40,41,.8);
+    text-align: center;
+  }
+  .ant-tooltip-arrow::before {
+    background-color: rgba(200,40,41,.8);
+  }
+}
+.month-statistics-inner {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  .month-metrics {
+    display: flex;
+    font-size: 16px;
+    &:last-child {
+      border-right: none;
+    }
+    .month-counts,.daily-average,.month-increase {
+      flex: 1;
+      padding:12px 0 ;
+      text-align: center;
+      border-right: 1px solid #ddd;
+      strong {
+        font-size: 26px;
+        margin-right: 8px;
+      }
+    }
+    .month-increase {
+      border-right: none;
+      .rise {
+        color:#3D9400
+      }
+      .decline {
+        color:#dc6154;
+      }
+    }
+  }
+  .month-charts {
+    border-top: 1px solid #ddd;
+    text-align: center;
+    padding: 16px;
+    path {
+      stroke: rgba(200,40,41,.6);
+      stroke-width: 2.5px;
+      fill: none;
+    }
+    rect {
+      fill: #f4f4f4;
+    }
+    text  {
+      fill:rgba(200,40,41,.6);
+    }
+    circle {
+      stroke: rgba(200,40,41,.8);
+      fill: #fff;
+      stroke-width: 2px;
+      &:hover {
+        cursor: pointer;
+        stroke: rgba(200,40,41,.8);
+        stroke-width: 3px;
+      }
+    }
+  }
+}

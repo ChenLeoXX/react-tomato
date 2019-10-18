@@ -11,6 +11,7 @@ interface PropsIF {
     description:string
     completed_at:string
     updated_at:string
+    started_at:string
     created_at:string
     ended_at:string
     id:number
@@ -101,7 +102,7 @@ class HistoryItem extends React.Component<PropsIF, StateIF> {
                         <div className="content">
                             <div className="times">
                                 <span className="time tomato-item">
-                                    {format(parseISO(this.props.created_at),'H:mm')}
+                                    {format(parseISO(this.props.started_at),'H:mm')}
                                     -
                                     {format(parseISO(this.props.ended_at),'H:mm')}
                                 </span>

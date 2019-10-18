@@ -3,8 +3,10 @@ import {connect} from "react-redux";
 import {format, parseISO} from "date-fns";
 import groupBy from 'lodash/groupBy'
 import Polygon from './Polygon'
+import Rect from './Rect'
 import TodoHistory from './TodoHistory/TodoHistory'
 import TomatoHistory from './TomatoHistory/TomatoHistory'
+import MonthStatistics from './MonthStatistics/MonthStatistics'
 import './Statistics.scss'
 interface PropsIF {
     todos:any[],
@@ -21,6 +23,15 @@ class Statistics extends React.Component<PropsIF, StateIF> {
         this.state = {
             activeTab :'',
         }
+    }
+
+    get monthDailyTomato() {
+        const year = new Date().getFullYear()
+        const month = new Date().getMonth()
+        const firstDayMS = +new Date(year, month, 1)
+        return this.finishedTomato.filter(t => {
+            return +new Date(t.started_at) > firstDayMS
+        })
     }
 
     get dailyTodos(){
@@ -77,6 +88,19 @@ class Statistics extends React.Component<PropsIF, StateIF> {
 
     }
 
+    get weeklyTomato(){
+        // @ts-ignore
+        let arr:any[] = []
+         this.getWeekDay(format(new Date(),'yyyy-MM-dd')).forEach(d=>{
+            if(this.dailyTomatos[d]){
+                arr.push(this.dailyTomatos[d])
+            }else{
+                arr.push('undefined')
+            }
+        })
+        return arr
+    }
+
     whichToRender = ()=>{
         switch (this.state.activeTab) {
             case 'todo':
@@ -84,9 +108,29 @@ class Statistics extends React.Component<PropsIF, StateIF> {
             case 'tomatoes':
                 return <TomatoHistory finishedTomato={this.finishedTomato} />
             case 'statistics':
-                return ''
+                return <MonthStatistics
+                    finishedTodo={this.finishedTodo} finishedTomato={this.finishedTomato}/>
             default:
                 return ''
+        }
+    }
+
+     getWeekDay = (dateString:string)=>{//得到一个日期，计算出这个日期所在周的7天的日期
+        let dateStringReg = /^\d{4}[/-]\d{1,2}[/-]\d{1,2}$/;
+
+        if (dateString.match(dateStringReg)) {
+            let presentDate = new Date(dateString),
+                today = presentDate.getDay() !== 0 ? presentDate.getDay() : 7;
+            return Array.from(new Array(7), function(val, index) {
+                return formatDate(new Date(presentDate.getTime() - (today - index - 1) * 24 * 60 * 60 * 1000));
+            });
+
+        } else {
+            throw new Error('dateString should be like "yyyy-mm-dd" or "yyyy/mm/dd"');
+        }
+
+        function formatDate(date:Date) {
+            return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
         }
     }
 
@@ -106,10 +150,10 @@ class Statistics extends React.Component<PropsIF, StateIF> {
                     <li className={activeTab === "statistics"?'tab-item active':'tab-item'} onClick={()=>{this.activeTabFn('statistics')}}>
                         <div className="details">
                             <span className="title">统计</span>
-                            <span className="desc">累计完成任务</span>
-                            <span className="count">{this.finishedTomato.length}</span>
+                            <span className="desc">{new Date().getMonth()+1}月累计完成</span>
+                            <span className="count">{this.monthDailyTomato.length}</span>
                         </div>
-                        <Polygon/>
+                        <Rect weeklyTomato={this.weeklyTomato}/>
                     </li>
                     <li className={activeTab === "tomatoes"?'tab-item active':'tab-item'} onClick={()=>{this.activeTabFn('tomatoes')}}>
                         <div className="details">
@@ -117,7 +161,7 @@ class Statistics extends React.Component<PropsIF, StateIF> {
                             <span className="desc">累计完成番茄</span>
                             <span className="count">{this.finishedTomato.length}</span>
                         </div>
-                        <Polygon p_points={tomatoPoint}/>
+                        <Polygon svgType="polygon" p_points={tomatoPoint}/>
                     </li>
                     <li className={activeTab === "todo"?'tab-item active':'tab-item'} onClick={()=>{this.activeTabFn('todo')}}>
                         <div className="details">
@@ -125,7 +169,7 @@ class Statistics extends React.Component<PropsIF, StateIF> {
                             <span className="desc">累计完成任务</span>
                             <span className="count">{this.finishedTodo.length}</span>
                         </div>
-                        <Polygon p_points={todoPoint}/>
+                        <Polygon p_points={todoPoint} svgType="polygon"/>
                     </li>
                 </ul>
                     {
