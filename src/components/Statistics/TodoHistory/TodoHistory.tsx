@@ -1,4 +1,4 @@
-import { Tabs ,Pagination} from 'antd';
+import { Tabs ,Pagination,Empty} from 'antd';
 const { TabPane } = Tabs;
 import {connect} from "react-redux";
 import {format, parseISO,getDay} from "date-fns";
@@ -98,9 +98,11 @@ class TodoHistory extends React.Component<PropsIF, StateIF> {
             <Tabs onChange={this.switchTab} type="card" activeKey={activeKey}>
             <TabPane tab="已完成的任务" key='finish'>
                 {list}
+                {
+                    this.props.finishedTodo.length === 0 ?  <Empty/>:null
+                }
                 <Pagination defaultCurrent={1} total={this.dates().length} pageSize={3}
-                            onChange={(p)=>this.pageChange(p)} showTotal={() => `总计 ${this.props.finishedTodo.length} 个任务`}
-                />
+                            onChange={(p)=>this.pageChange(p)} showTotal={() => `总计 ${this.props.finishedTodo.length} 个任务`}/>
             </TabPane>
             <TabPane tab="已删除的任务" key="delete">
                 <div className="items-list">
@@ -108,6 +110,11 @@ class TodoHistory extends React.Component<PropsIF, StateIF> {
                         this.deletedTodo.map(t=>{
                             return <HistoryItem render="deletedTodoItem"  key={t.id} {...t}/>
                         })
+                    }
+                    {
+
+                        this.deletedTodo.length === 0 ?  <Empty/>:null
+
                     }
                 </div>
             </TabPane>

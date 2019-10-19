@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {Tabs, Pagination, Button, Tooltip, Form, DatePicker, Input, message} from 'antd';
+import {Tabs, Pagination, Button, Tooltip, Form, DatePicker, Input, message,Empty} from 'antd';
 const { TabPane } = Tabs;
 import {connect} from "react-redux";
 import {format, getDay, parseISO} from "date-fns";
@@ -227,6 +227,9 @@ class TomatoHistory extends React.Component<PropsIF, StateIF> {
                             manualTomatoVisible ? this.manualTomatoForm :null
                         }
                         {list}
+                        {
+                            this.props.finishedTomato.length === 0 && !manualTomatoVisible ? <Empty/> :null
+                        }
                         <Pagination defaultCurrent={1} total={this.dates().length} pageSize={3}
                                     onChange={this.pageChange} showTotal={() => `总计 ${this.props.finishedTomato.length} 个番茄`}
                         />
@@ -237,6 +240,9 @@ class TomatoHistory extends React.Component<PropsIF, StateIF> {
                                 this.abortedTomato.map(t=>{
                                     return <HistoryItem render="deletedTomatoItem" key={t.id} {...t}/>
                                 })
+                            }
+                            {
+                                this.abortedTomato.length === 0 ? <Empty/> :null
                             }
                         </div>
                     </TabPane>
