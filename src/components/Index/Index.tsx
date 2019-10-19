@@ -34,7 +34,7 @@ interface StateIF {
         super(props)
         this.state = {
             user:{},
-            isLoading:false,
+            isLoading:true,
             panelVisible:false,
         }
     }
@@ -97,7 +97,7 @@ interface StateIF {
         const DIV =document.createElement("DIV")
          document.body.appendChild(DIV)
          ReactDom.render(<Loading isLoading={this.state.isLoading}/>,DIV)
-        const res = await  Promise.all([this.getTodos(),this.getTomato(),this.getUser()])
+         const res =  await  Promise.all([this.getTodos(),this.getTomato(),this.getUser()])
          if(res.every(loaded=>loaded)) {
              this.setState({isLoading:false})
              DIV.remove()
@@ -132,7 +132,10 @@ interface StateIF {
         return (
             <div className="index-wrapper">
                 <header>
-                    <a className="logo">React-Tomato</a>
+                    <a className="logo">
+                        <img src="assets/index_logo.png" alt=""/>
+                        <span className="logo-text dashed-shadow">Pomotodo</span>
+                    </a>
                     <Dropdown overlay={menu}>
                         <Button>
                             {user.account} <Icon type="down" />

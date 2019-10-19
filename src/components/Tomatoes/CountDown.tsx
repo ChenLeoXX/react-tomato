@@ -10,13 +10,15 @@ interface PropsIF {
 
 interface StateIF {
     countdown:number;
+    finished:boolean
 }
 let timerId:Timeout
 export default class CountDown extends React.Component<PropsIF, StateIF> {
     constructor(props: PropsIF) {
         super(props)
         this.state = {
-            countdown:this.props.timer
+            countdown:this.props.timer,
+            finished:false,
         }
     }
 
@@ -52,6 +54,7 @@ export default class CountDown extends React.Component<PropsIF, StateIF> {
                 this.props.finish()
                 clearInterval(timerId)
                 document.title = `番茄闹钟`
+                this.setState({finished:true})
             }else{
                 this.setState({countdown:time})
                 const times = this.calcTime()
@@ -59,6 +62,25 @@ export default class CountDown extends React.Component<PropsIF, StateIF> {
             }
             
         },1000)
+    }
+
+    componentDidUpdate(prevProps: Readonly<PropsIF>, prevState: Readonly<StateIF>, snapshot?: any): void {
+        if(this.state.finished){
+            if(Notification.permission === 'granted'){
+                const notification = new Notification('番茄完成提醒', {
+                    body: '你刚才设置的番茄已经完成啦，快去查看吧~',
+                    icon:'https://i.loli.net/2019/10/19/ZLFMSDYARO57dTn.png',
+                    data:{
+                        url:location.host
+                    },
+                    requireInteraction: true
+                })
+                notification.onclick = function () {
+                    window.focus()
+                    notification.close()
+                }
+            }
+        }
     }
 
     componentWillUnmount() {

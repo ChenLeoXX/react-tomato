@@ -46,6 +46,11 @@ export default class TomatoAction extends React.Component<PropsIF, StateIF> {
 
     addTomato = ()=>{
         this.props.addTomato()
+        Notification.requestPermission().then(function(permission) {
+            if(permission === 'denied'){
+                message.info('拒绝通知后,完成番茄将无法收到通知.')
+            }
+        });
         this.setState({notCounting:false})
     }
 
