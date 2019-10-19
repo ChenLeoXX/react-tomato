@@ -91,6 +91,7 @@ interface StateIF {
 
      logout = ()=>{
         localStorage.setItem('token','')
+         document.title= '番茄闹钟'
         this.props.history.push('login')
     }
      async componentDidMount() {

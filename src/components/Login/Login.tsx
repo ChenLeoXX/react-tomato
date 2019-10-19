@@ -3,7 +3,7 @@ import { Input, Icon,Button ,message} from 'antd';
 import {Link, RouteComponentProps} from 'react-router-dom'
 import api from '../../config/axios'
 import '../SignUp/SignUp.scss'
-import logo from '../../pomotodo_cn.png';
+// import logo from '../../pomotodo_cn.png';
 interface PropsIF extends RouteComponentProps<any>{
 
 }
@@ -63,9 +63,9 @@ export default class SignUp extends React.Component<PropsIF, StateIF> {
         return (
             <div id="sign-up">
                 <div className="logo">
-                    <img src={logo} alt=""/>
+                    <img src="assets/index_logo.png" alt=""/>
+                    <span className="logo-text">Pomotodo</span>
                 </div>
-                <h1>登录</h1>
                 <Input
                     placeholder="输入账号"
                     prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}

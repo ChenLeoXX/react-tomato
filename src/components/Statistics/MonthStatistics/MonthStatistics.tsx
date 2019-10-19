@@ -145,7 +145,7 @@ export default class MonthStatistics extends React.Component<PropsIF, StateIF> {
     calcCircleY = (item: string) => {
         const monthCountTomato = this.monthDailyTomato.length
         if (this.monthTomatoObj[item]) {
-            return (1 - this.monthTomatoObj[item].length / monthCountTomato) * 170 +6
+            return (1 - this.monthTomatoObj[item].length / monthCountTomato) * 170
         } else {
             return 170
         }
@@ -154,7 +154,7 @@ export default class MonthStatistics extends React.Component<PropsIF, StateIF> {
     calcCircleY_TODO = (item: string) => {
         const monthCountTodo = this.monthDailyTodo.length
         if (this.monthTodoObj[item]) {
-            return (1 - this.monthTodoObj[item].length / monthCountTodo) * 170+6
+            return (1 - this.monthTodoObj[item].length / monthCountTodo) * 170
         } else {
             return 170
         }

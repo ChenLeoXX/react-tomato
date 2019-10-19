@@ -21,7 +21,7 @@ class Statistics extends React.Component<PropsIF, StateIF> {
     constructor(props: PropsIF) {
         super(props)
         this.state = {
-            activeTab :'',
+            activeTab :'statistics',
         }
     }
 
