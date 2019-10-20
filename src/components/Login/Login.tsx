@@ -16,8 +16,8 @@ export default class SignUp extends React.Component<PropsIF, StateIF> {
     constructor(props:PropsIF) {
         super(props)
         this.state = {
-            account:'',
-            password:'',
+            account:'admin',
+            password:'admin',
         }
     }
     onInputChange = (key:keyof StateIF,e:React.ChangeEvent<HTMLInputElement>)=>{
