@@ -16,8 +16,8 @@ export default class SignUp extends React.Component<PropsIF, StateIF> {
     constructor(props:PropsIF) {
         super(props)
         this.state = {
-            account:'admin',
-            password:'admin',
+            account:'',
+            password:'',
         }
     }
     onInputChange = (key:keyof StateIF,e:React.ChangeEvent<HTMLInputElement>)=>{
@@ -68,13 +68,11 @@ export default class SignUp extends React.Component<PropsIF, StateIF> {
                 </div>
                 <Input
                     placeholder="输入账号"
-                    value={"admin"}
                     prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                     onChange={(e)=>this.onInputChange('account',e)}
                     allowClear
                 />
                 <Input.Password placeholder="输入密码"
-                                value={"admin"}
                                 onKeyUp={e=>this.onKeyUp(e)}
                                 onChange={(e)=>this.onInputChange('password',e)}/>
                 <Button onClick={this.validate} type="danger" size='large'>登录</Button>
